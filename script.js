@@ -32,10 +32,10 @@ topMenuEl.style.backgroundColor = 'var(--top-menu-bg)'
 topMenuEl.classList.add('flex-around')
 
 // Task 3.0
-menuLinks.forEach(function(link) {
-    const linkEl = document.createElement('a')
-    linkEl.setAttribute('href', link.href)
-    linkEl.innerText = link.text // -> another way?
+menuLinks.forEach(function(link) { // -> create a forEach loop to iterate through each menu item
+    const linkEl = document.createElement('a') // -> create an 'a' element
+    linkEl.setAttribute('href', link.href) // -> add an href attribute with the href value of the link object
+    linkEl.innerText = link.text // -> set element's content to the value of the text property
     // console.log(link.text)
-    topMenuEl.appendChild(linkEl)
+    topMenuEl.appendChild(linkEl) // -> append new element to topMenuEl
 })
