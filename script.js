@@ -103,12 +103,14 @@ topMenuEl.addEventListener("click", function (event) {
     event.target.classList.remove("active");
     showingSubMenu = false;
     subMenuEl.style.top = "0";
+    return;
   }
   // Task 5.4
   // New menu item is clicked
-  topMenuLinks.forEach(function (reset) {
-    reset.classList.remove("active");
+  topMenuLinks.forEach(function (remove) {
+    remove.classList.remove("active");
   });
+  
   // Task 5.5
   event.target.classList.add("active");
   // Task 5.6
@@ -124,20 +126,42 @@ topMenuEl.addEventListener("click", function (event) {
   //   console.log('foundLink: ', foundLink)
 
   if (link.innerText !== "ABOUT") {
-// console.log(linkObj.subLinks)
-   linkObj.subLinks.forEach(function (subLink) {
-      // subMenuEl.remove() // -> working thru how to clear contents of subMenuEl
-      let subLinkEl = document.createElement('a')
-      subLinkEl.setAttribute('href', subLink.href)
-      subLinkEl.innerText = subLink.text
-      subMenuEl.appendChild(subLinkEl)
-      console.log(subLinkEl)
-      console.log(subMenuEl)
-    // -> Clicked CATALOG, ORDERS, or ACCOUNT
-    showingSubMenu = true;
-    // console.log(showingSubMenu)
-    subMenuEl.style.top = "100%";
-  })} else {
+    // Task 5.8
+    subMenuEl.innerHTML = ""; // -> clear contents of subMenuEl
+    // console.log(linkObj.subLinks)
+    linkObj.subLinks.forEach(function (subLink) {
+      let subLinkEl = document.createElement("a");
+      subLinkEl.setAttribute("href", subLink.href);
+      subLinkEl.innerText = subLink.text;
+      subMenuEl.appendChild(subLinkEl);
+      // console.log(subLinkEl)
+      // console.log(subMenuEl)
+      // -> Clicked CATALOG, ORDERS, or ACCOUNT
+      showingSubMenu = true;
+      // console.log(showingSubMenu)
+      subMenuEl.style.top = "100%";
+
+      // Task 6.0
+      subMenuEl.addEventListener("click", function (subEvent) {
+        subEvent.preventDefault();
+        if (subEvent.target.tagName !== "A") {
+          return;
+        }
+        console.log(subEvent.target.innerText);
+
+        // Task 6.1
+        showingSubMenu = false;
+        subMenuEl.style.top = "0%";
+
+        // Task 6.2
+        link.classList.remove("active");
+
+        // Task 6.3
+        mainEl.innerHTML = "<h1>" + subEvent.target.innerText.toLowerCase() + "</h1>"
+        console.log(mainEl.innerHTML)
+      });
+    });
+  } else {
     // -> Clicked ABOUT
     showingSubMenu = false;
     // console.log(showingSubMenu)
@@ -147,7 +171,7 @@ topMenuEl.addEventListener("click", function (event) {
   //   return;
 });
 
-// // Console logs to check work
-console.log('topMenuEl: ', topMenuEl)
-console.log('topMenuLinks: ', topMenuLinks)
-console.log('menuLinks: ', menuLinks)
+// // // Console logs to check work
+// console.log("topMenuEl: ", topMenuEl);
+// console.log("topMenuLinks: ", topMenuLinks);
+// console.log("menuLinks: ", menuLinks);
