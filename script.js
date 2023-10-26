@@ -124,11 +124,20 @@ topMenuEl.addEventListener("click", function (event) {
   //   console.log('foundLink: ', foundLink)
 
   if (link.innerText !== "ABOUT") {
+// console.log(linkObj.subLinks)
+   linkObj.subLinks.forEach(function (subLink) {
+      // subMenuEl.remove() // -> working thru how to clear contents of subMenuEl
+      let subLinkEl = document.createElement('a')
+      subLinkEl.setAttribute('href', subLink.href)
+      subLinkEl.innerText = subLink.text
+      subMenuEl.appendChild(subLinkEl)
+      console.log(subLinkEl)
+      console.log(subMenuEl)
     // -> Clicked CATALOG, ORDERS, or ACCOUNT
     showingSubMenu = true;
     // console.log(showingSubMenu)
     subMenuEl.style.top = "100%";
-  } else {
+  })} else {
     // -> Clicked ABOUT
     showingSubMenu = false;
     // console.log(showingSubMenu)
