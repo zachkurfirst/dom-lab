@@ -107,8 +107,9 @@ topMenuEl.addEventListener("click", function (event) {
   }
   // Task 5.4
   // New menu item is clicked
-  topMenuLinks.forEach(function (remove) {
-    remove.classList.remove("active");
+  topMenuLinks.forEach(function (linkEl) {
+    console.log(linkEl)
+    linkEl.classList.remove("active");
   });
   
   // Task 5.5
@@ -158,7 +159,6 @@ topMenuEl.addEventListener("click", function (event) {
 
         // Task 6.3
         mainEl.innerHTML = "<h1>" + subEvent.target.innerText.toLowerCase() + "</h1>"
-        console.log(mainEl.innerHTML)
       });
     });
   } else {
