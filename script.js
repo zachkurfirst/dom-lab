@@ -105,71 +105,98 @@ topMenuEl.addEventListener("click", function (event) {
     subMenuEl.style.top = "0";
     return;
   }
-  // Task 5.4
+  // Task 5.4 -> shifting active state to current element
   // New menu item is clicked
   topMenuLinks.forEach(function (linkEl) {
-    console.log(linkEl)
+    // console.log(linkEl)
     linkEl.classList.remove("active");
+    // console.log(linkEl)
   });
-  
+
   // Task 5.5
   event.target.classList.add("active");
   // Task 5.6
   const link = event.target; // -> Saving the link in a variable
-  const linkObj = menuLinks.find((menuLink) => {
-    return menuLink.text.toUpperCase() === link.innerText;
-    // console.log(menuLink.text) // -> about
+  let currentLink = menuLinks.find((linkObj) => {
+    return linkObj.text.toUpperCase() === link.innerText;
+    // console.log(linkObj.text) // -> about
     // console.log(link.innerText) // -> ABOUT
   });
-  console.log(linkObj);
-  //  return link.text === menuLink.innerText
+  console.log(currentLink.subLinks);
+  //  return link.text === currentLink.innerText
   //   })
   //   console.log('foundLink: ', foundLink)
 
-  if (link.innerText !== "ABOUT") {
-    // Task 5.8
-    subMenuEl.innerHTML = ""; // -> clear contents of subMenuEl
-    // console.log(linkObj.subLinks)
-    linkObj.subLinks.forEach(function (subLink) {
-      let subLinkEl = document.createElement("a");
-      subLinkEl.setAttribute("href", subLink.href);
-      subLinkEl.innerText = subLink.text;
-      subMenuEl.appendChild(subLinkEl);
-      // console.log(subLinkEl)
-      // console.log(subMenuEl)
-      // -> Clicked CATALOG, ORDERS, or ACCOUNT
-      showingSubMenu = true;
-      // console.log(showingSubMenu)
-      subMenuEl.style.top = "100%";
-
-      // Task 6.0
-      subMenuEl.addEventListener("click", function (subEvent) {
-        subEvent.preventDefault();
-        if (subEvent.target.tagName !== "A") {
-          return;
-        }
-        console.log(subEvent.target.innerText);
-
-        // Task 6.1
-        showingSubMenu = false;
-        subMenuEl.style.top = "0%";
-
-        // Task 6.2
-        link.classList.remove("active");
-
-        // Task 6.3
-        mainEl.innerHTML = "<h1>" + subEvent.target.innerText.toLowerCase() + "</h1>"
-      });
-    });
+  // Task 5.7 Updated
+  if (currentLink.subLinks) {
+    showingSubMenu = true;
   } else {
-    // -> Clicked ABOUT
     showingSubMenu = false;
-    // console.log(showingSubMenu)
-    subMenuEl.style.top = "0%";
+  }
+
+  if (showingSubMenu) {
+    buildSubMenu(currentLink.subLinks);
+    subMenuEl.style.top = "100%";
+  } else {
+    subMenuEl.style.top = "0";
     mainEl.innerHTML = "<h1>About</h1>";
   }
-  //   return;
+
+  function buildSubMenu(linksArr) {
+    subMenuEl.innerHTML = "";
+    for (let linkObj of linksArr) {
+      // -> revised with for... of approach
+      const subLinkEl = document.createElement("a");
+      subLinkEl.setAttribute("href", linkObj.href);
+      subLinkEl.innerText = linkObj.text;
+      subMenuEl.appendChild(subLinkEl);
+    }
+  }
+
+  // if (link.innerText !== "ABOUT") {
+  // Task 5.8
+  // subMenuEl.innerHTML = ""; -> moved to above
+  // console.log(currentLink.subLinks)
+  // currentLink.subLinks.forEach(function (subLink) { -> moved iteration to above
+  //   let subLinkEl = document.createElement("a");
+  //   subLinkEl.setAttribute("href", subLink.href);
+  //   subLinkEl.innerText = subLink.text;
+  //   subMenuEl.appendChild(subLinkEl);
+  // console.log(subLinkEl)
+  // console.log(subMenuEl)
+  // -> Clicked CATALOG, ORDERS, or ACCOUNT
+  // showingSubMenu = true;
+  // console.log(showingSubMenu)
+  // subMenuEl.style.top = "100%"; ->moved to if (showingSubMenu)
+
+  // Task 6.0
+  subMenuEl.addEventListener("click", function (subEvent) {
+    subEvent.preventDefault();
+    if (subEvent.target.tagName !== "A") {
+      return;
+    }
+    console.log(subEvent.target.innerText);
+
+    // Task 6.1 -> reset visual menu on submenu click
+    showingSubMenu = false;
+    subMenuEl.style.top = "0";
+
+    // Task 6.2
+    topMenuLinks.forEach(function (linkEl) {
+      // -> repeat same iteration as above
+      linkEl.classList.remove("active");
+    });
+
+    // Task 6.3
+    let pageName = link.innerText;
+    // console.log('link inner text', link.innerText)
+    mainEl.innerHTML = `<h1>${pageName}</h1>`; // -> string interpolation
+  });
 });
+// console.log(showingSubMenu)
+// subMenuEl.style.top = "0"; -> moved to above
+// mainEl.innerHTML = "<h1>About</h1>"; -> moved to above
+//   return;
 
 // // // Console logs to check work
 // console.log("topMenuEl: ", topMenuEl);
